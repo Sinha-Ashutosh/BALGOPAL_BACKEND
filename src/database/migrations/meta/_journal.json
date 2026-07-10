@@ -15,6 +15,20 @@
       "when": 1783640278675,
       "tag": "0001_add_roles_updated_at_trigger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783646949627,
+      "tag": "0002_clammy_newton_destine",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1783646973602,
+      "tag": "0003_add_admins_updated_at_trigger",
+      "breakpoints": true
     }
   ]
 }

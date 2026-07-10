@@ -6,7 +6,10 @@
     "build": "tsc && tsc-alias",
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "tsx src/database/seeders/index.ts"
   },
   "author": "",
   "license": "ISC",
