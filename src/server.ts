@@ -1,6 +1,6 @@
 import app from "./app";
 import { env, logger } from "@/config";
-
+import { pool } from "@/database";
 const server = app.listen(env.PORT, () => {
  logger.info(
   {
@@ -26,13 +26,25 @@ const shutdown = (signal: string) => {
   { signal },
   "Server shut down successfully."
 );
-  server.close(() => {
-   logger.info(
-  { signal },
-  "Server shut down successfully."
-);
+ server.close(async () => {
+  try {
+    await pool.end();
+
+    logger.info(
+      { signal },
+      "Database connection closed."
+    );
+
     process.exit(0);
-  });
+  } catch (error) {
+    logger.error(
+      { error },
+      "Error while closing database connection."
+    );
+
+    process.exit(1);
+  }
+});
 
   // Force-exit if it hangs (e.g. open DB connections not closing)
   setTimeout(() => {
