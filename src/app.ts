@@ -5,7 +5,7 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import { env } from "@/config";
-
+import authRoutes from "@/modules/auth/Routes/auth.routes";
 const app = express();
 
 // Needed if running behind a reverse proxy (Render, Railway, Nginx, etc.)
@@ -32,5 +32,6 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 app.use(limiter);
+app.use("/api/auth", authRoutes);
 
 export default app;

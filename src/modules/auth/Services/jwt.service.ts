@@ -3,10 +3,12 @@ import jwt from "jsonwebtoken";
 import { z } from "zod";
 
 import { env } from "@/config";
+import type { Role } from "@/constants/role";
+import { ROLE_VALUES } from "@/constants/role";
 
 export interface JwtPayload {
   adminId: string;
-  roleId: string;
+  role: Role;
 }
 
 export interface TokenPair {
@@ -16,7 +18,7 @@ export interface TokenPair {
 
 const jwtPayloadSchema = z.object({
   adminId: z.string().uuid(),
-  roleId: z.string().uuid(),
+  role: z.enum(ROLE_VALUES),
 });
 
 class JwtService {

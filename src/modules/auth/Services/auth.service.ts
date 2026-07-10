@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { adminRepository } from "@/repositories/admin.repository";
 import { refreshTokenRepository } from "@/repositories/refresh-token.repository";
 
-import { jwtService } from "./jwt.service.js";
+import { jwtService } from "./jwt.service";
 
 export interface SessionMetadata {
   userAgent?: string;
@@ -36,12 +36,12 @@ export class AuthService {
    */
   private async createSession(
     adminId: string,
-    roleId: string,
+    role: string,
     meta?: SessionMetadata
   ): Promise<SessionTokens> {
     const { accessToken, refreshToken } = jwtService.generateTokenPair({
       adminId,
-      roleId,
+      role,
     });
 
     await refreshTokenRepository.create(
@@ -107,7 +107,7 @@ export class AuthService {
 
     return this.createSession(
       payload.adminId,
-      payload.roleId,
+      payload.role,
       meta
     );
   }

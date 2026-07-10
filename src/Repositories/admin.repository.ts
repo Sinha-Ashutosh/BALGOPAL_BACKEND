@@ -1,7 +1,10 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "@/database";
-import { admins } from "@/database/schema";
+import { admins, roles } from "@/database/schema";
+import { Role } from "@/constants/role";
+
+import type { AdminWithRole } from "@/modules/auth/types/admin-with-role";
 
 export class AdminRepository {
   /**
@@ -11,12 +14,25 @@ export class AdminRepository {
    */
   async findByEmail(
     email: string
-  ): Promise<typeof admins.$inferSelect | null> {
+  ): Promise<AdminWithRole | null> {
     const [admin] = await db
-      .select()
-      .from(admins)
-      .where(eq(admins.email, email))
-      .limit(1);
+      .select({
+        id: admins.id,
+        name: admins.name,
+        email: admins.email,
+        password: admins.password,
+        phone: admins.phone,
+        profileImage: admins.profileImage,
+        role: roles.name,
+        isActive: admins.isActive,
+        lastLogin: admins.lastLogin,
+        createdAt: admins.createdAt,
+        updatedAt: admins.updatedAt,
+    })
+    .from(admins)
+    .innerJoin(roles, eq(admins.roleId, roles.id))
+    .where(eq(admins.email, email))
+    .limit(1);
 
     return admin ?? null;
   }
@@ -26,10 +42,23 @@ export class AdminRepository {
    */
   async findById(
     id: string
-  ): Promise<typeof admins.$inferSelect | null> {
+  ): Promise<AdminWithRole | null> {
     const [admin] = await db
-      .select()
+      .select({
+        id: admins.id,
+        name: admins.name,
+        email: admins.email,
+        password: admins.password,
+        phone: admins.phone,
+        profileImage: admins.profileImage,
+        role: roles.name,
+        isActive: admins.isActive,
+        lastLogin: admins.lastLogin,
+        createdAt: admins.createdAt,
+        updatedAt: admins.updatedAt,
+    })
       .from(admins)
+      .innerJoin(roles, eq(admins.roleId, roles.id))
       .where(eq(admins.id, id))
       .limit(1);
 
