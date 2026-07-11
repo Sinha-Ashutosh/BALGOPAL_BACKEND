@@ -26,6 +26,10 @@ const envSchema = z.object({
 
   JWT_REFRESH_EXPIRES_IN: z.string().default("30d"),
 
+  DEFAULT_ADMIN_PASSWORD: z
+    .string()
+    .min(8, "DEFAULT_ADMIN_PASSWORD must be at least 8 characters"),
+
   // Optional — uncomment/add as needed for your stack
   // CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
   // CLOUDINARY_API_KEY: z.string().min(1).optional(),

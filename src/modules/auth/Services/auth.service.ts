@@ -4,6 +4,7 @@ import { adminRepository } from "@/repositories/admin.repository";
 import { refreshTokenRepository } from "@/repositories/refresh-token.repository";
 
 import { jwtService } from "./jwt.service";
+import { Role } from "@/src/constants/role";
 
 export interface SessionMetadata {
   userAgent?: string;
@@ -13,6 +14,15 @@ export interface SessionMetadata {
 export interface SessionTokens {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface LoginResponse extends SessionTokens {
+  admin: {
+    id: string;
+    name: string;
+    email: string;
+    roleId: Role;
+  };
 }
 
 /**
@@ -36,7 +46,7 @@ export class AuthService {
    */
   private async createSession(
     adminId: string,
-    role: string,
+    role: Role,
     meta?: SessionMetadata
   ): Promise<SessionTokens> {
     const { accessToken, refreshToken } = jwtService.generateTokenPair({
@@ -66,7 +76,7 @@ export class AuthService {
     email: string,
     password: string,
     meta?: SessionMetadata
-  ): Promise<SessionTokens> {
+  ): Promise<LoginResponse> {
     const normalizedEmail = email.trim().toLowerCase();
 
     const admin = await adminRepository.findByEmail(normalizedEmail);
@@ -81,7 +91,21 @@ export class AuthService {
       throw new Error("Invalid email or password.");
     }
 
-    return this.createSession(admin.id, admin.roleId, meta);
+     const tokens = await this.createSession(
+      admin.id,
+      admin.role,
+      meta
+    );
+
+    return {
+      ...tokens,
+      admin: {
+        id: admin.id,
+        name: admin.name,
+        email: admin.email,
+        roleId: admin.role,
+      },
+    };
   }
 
   /**

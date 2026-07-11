@@ -2,7 +2,7 @@ import { CookieOptions, Response } from "express";
 
 import { env } from "@/config";
 
-const COOKIE_NAMES = {
+export const COOKIE_NAMES = {
   access: "accessToken",
   refresh: "refreshToken",
 } as const;

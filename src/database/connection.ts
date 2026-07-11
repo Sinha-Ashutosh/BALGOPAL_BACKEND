@@ -1,6 +1,7 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { env, logger } from "@/config";
+import { env, logger } from "@/config/index";
+import * as schema from "@/database/schema";
 
 export const pool = new Pool({
   connectionString: env.DATABASE_URL,
@@ -19,5 +20,5 @@ pool.on("error", (err) => {
   logger.error({ err }, "Unexpected PG pool error");
 });
 
-export const db = drizzle(pool);
+export const db = drizzle(pool, { schema });
 export type Database = typeof db;

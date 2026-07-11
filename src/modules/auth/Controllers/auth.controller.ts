@@ -31,7 +31,6 @@ const login = asyncHandler(
       userAgent: req.get("user-agent"),
       ipAddress: req.ip,
     });
-
     setAuthCookies(
       res,
       result.accessToken,
