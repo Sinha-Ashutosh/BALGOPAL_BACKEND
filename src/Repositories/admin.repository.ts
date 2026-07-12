@@ -1,9 +1,10 @@
-import { eq } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, or, count, type SQL } from "drizzle-orm";
 
 import { db } from "@/database";
 import { admins, roles } from "@/database/schema";
 import { Role } from "@/constants/role";
 import type { AdminWithRole } from "@/modules/auth/types/admin-with-role";
+import type { GetAdminsQueryDto } from "../modules/admin-management/validations/admin.validation";
 
 export class AdminRepository {
   /**
@@ -108,6 +109,123 @@ async create(data: {
 
     return admin ?? null;
   }
+
+  async findAll(query: GetAdminsQueryDto) {
+    const {
+      page,
+      limit,
+      search,
+      role,
+      isActive,
+      sortBy,
+      order,
+    } = query;
+
+    const offset = (page - 1) * limit;
+
+    const conditions: SQL[] = [];
+
+    if (search) {
+      conditions.push(
+        or(
+          ilike(admins.name, `%${search}%`),
+          ilike(admins.email, `%${search}%`)
+        )!
+      );
+    }
+
+    if (role) {
+      conditions.push(eq(roles.name, role));
+    }
+
+    if (isActive !== undefined) {
+      conditions.push(eq(admins.isActive, isActive));
+    }
+
+    const whereClause =
+      conditions.length > 0 ? and(...conditions) : undefined;
+
+    const sortColumns = {
+      name: admins.name,
+      email: admins.email,
+      createdAt: admins.createdAt,
+      lastLogin: admins.lastLogin,
+    }as const;
+
+    const sortColumn = sortColumns[sortBy] ?? admins.createdAt;
+
+    const orderByClause =
+      order === "asc" ? asc(sortColumn) : desc(sortColumn);
+
+    const [adminsList, [{ total }]] = await Promise.all([
+      db
+        .select({
+          id: admins.id,
+          name: admins.name,
+          email: admins.email,
+          phone: admins.phone,
+          profileImage: admins.profileImage,
+          role: roles.name,
+          isActive: admins.isActive,
+          lastLogin: admins.lastLogin,
+          createdAt: admins.createdAt,
+        })
+        .from(admins)
+        .innerJoin(roles, eq(admins.roleId, roles.id))
+        .where(whereClause)
+        .orderBy(orderByClause, asc(admins.id))
+        .limit(limit)
+        .offset(offset),
+
+      db
+        .select({
+          total: count(),
+        })
+        .from(admins)
+        .innerJoin(roles, eq(admins.roleId, roles.id))
+        .where(whereClause),
+    ]);
+
+    return {
+      admins: adminsList,
+      total,
+    };
+  }
+
+  async update(
+  id: string,
+  data: Partial<{
+    name: string;
+    email: string;
+    phone: string;
+    profileImage: string | null;
+    roleId: string;
+    isActive: boolean;
+  }>
+) {
+  const [admin] = await db
+    .update(admins)
+    .set({
+      ...data,
+      updatedAt: new Date(),
+    })
+    .where(eq(admins.id, id))
+    .returning({
+      id: admins.id,
+      name: admins.name,
+      email: admins.email,
+      phone: admins.phone,
+      profileImage: admins.profileImage,
+      roleId: admins.roleId,
+      isActive: admins.isActive,
+      lastLogin: admins.lastLogin,
+      createdAt: admins.createdAt,
+      updatedAt: admins.updatedAt,
+    });
+
+  return admin;
+}
+
 }
 
 export const adminRepository = new AdminRepository();

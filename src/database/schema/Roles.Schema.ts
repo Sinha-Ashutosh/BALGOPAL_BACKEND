@@ -6,6 +6,8 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { admins } from "./admins.schema";
 
 export const roles = pgTable("roles", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -27,3 +29,7 @@ export const roles = pgTable("roles", {
     .defaultNow()
     .notNull(),
 });
+
+export const rolesRelations = relations(roles, ({ many }) => ({
+  admins: many(admins),
+}));

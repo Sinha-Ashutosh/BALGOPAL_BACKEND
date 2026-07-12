@@ -12,7 +12,11 @@ export const validate =
     try {
       const parsed = await schema.parseAsync(req[target]);
 
-      (req as any)[target] = parsed;
+       if (target === "body") {
+        req.body = parsed;
+      } else {
+        Object.assign(req[target], parsed);
+      }
 
       next();
     } catch (error) {
