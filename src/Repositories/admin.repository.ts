@@ -3,7 +3,6 @@ import { eq } from "drizzle-orm";
 import { db } from "@/database";
 import { admins, roles } from "@/database/schema";
 import { Role } from "@/constants/role";
-
 import type { AdminWithRole } from "@/modules/auth/types/admin-with-role";
 
 export class AdminRepository {
@@ -68,16 +67,30 @@ export class AdminRepository {
   /**
    * Create a new admin.
    */
-  async create(
-    data: typeof admins.$inferInsert
-  ): Promise<typeof admins.$inferSelect> {
-    const [admin] = await db
-      .insert(admins)
-      .values(data)
-      .returning();
-
-    return admin;
-  }
+  // admin.repository.ts — replacing the old create()
+async create(data: {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string | null;
+  profileImage?: string | null;
+  roleId: string;
+}) {
+  const [admin] = await db
+    .insert(admins)
+    .values(data)
+    .returning({
+      id: admins.id,
+      name: admins.name,
+      email: admins.email,
+      phone: admins.phone,
+      profileImage: admins.profileImage,
+      roleId: admins.roleId,
+      isActive: admins.isActive,
+      createdAt: admins.createdAt,
+    });
+  return admin;
+}
 
   /**
    * Update the last login timestamp.

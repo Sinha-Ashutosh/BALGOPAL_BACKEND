@@ -25,7 +25,7 @@ const envSchema = z.object({
   JWT_ACCESS_EXPIRES_IN: z.string().default("15m"),
 
   JWT_REFRESH_EXPIRES_IN: z.string().default("30d"),
-
+  BCRYPT_SALT_ROUNDS: z.coerce.number().default(18),
   DEFAULT_ADMIN_PASSWORD: z
     .string()
     .min(8, "DEFAULT_ADMIN_PASSWORD must be at least 8 characters"),
