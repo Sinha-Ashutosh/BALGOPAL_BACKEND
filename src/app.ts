@@ -6,8 +6,8 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import { env } from "@/config";
 import authRoutes from "@/modules/auth/Routes/auth.routes";
-import adminRoutes from "@/modules/admin-management/routes/admin.routes.js";
-
+import adminRoutes from "@/modules/admin-management/routes/admin.routes";
+import settingsRoutes from "@/modules/settings/routes/settings.routes";
 const app = express();
 
 // Needed if running behind a reverse proxy (Render, Railway, Nginx, etc.)
@@ -36,5 +36,5 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/admins", adminRoutes);
-
+app.use("/api/settings", settingsRoutes);
 export default app;

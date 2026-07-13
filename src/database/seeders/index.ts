@@ -2,6 +2,7 @@ import { logger } from "@/config";
 import { pool } from "@/database";
 import { seedRoles } from "./roles.seeder.js";
 import { seedAdmin } from "./admins.seeder.js";
+import { seedWebsiteSettings } from "./website-settings.seeder.js";
 async function runSeeders() {
   try {
     logger.info("Starting database seeding...");
@@ -9,6 +10,7 @@ async function runSeeders() {
     await seedRoles();
     await seedRoles();
     await seedAdmin();
+    await seedWebsiteSettings();
 
     logger.info("Database seeding completed successfully.");
   } catch (err) {
