@@ -31,9 +31,9 @@ const envSchema = z.object({
     .min(8, "DEFAULT_ADMIN_PASSWORD must be at least 8 characters"),
 
   // Optional — uncomment/add as needed for your stack
-  // CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
-  // CLOUDINARY_API_KEY: z.string().min(1).optional(),
-  // CLOUDINARY_API_SECRET: z.string().min(1).optional(),
+  CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
+  CLOUDINARY_API_KEY: z.string().min(1).optional(),
+  CLOUDINARY_API_SECRET: z.string().min(1).optional(),
   CORS_ORIGIN: z.string().min(1),
 });
 

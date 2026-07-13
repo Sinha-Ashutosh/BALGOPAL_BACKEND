@@ -8,6 +8,7 @@ import { env } from "@/config";
 import authRoutes from "@/modules/auth/Routes/auth.routes";
 import adminRoutes from "@/modules/admin-management/routes/admin.routes";
 import settingsRoutes from "@/modules/settings/routes/settings.routes";
+import galleryRoutes from "@/modules/gallery/routes/gallery.routes.js";
 const app = express();
 
 // Needed if running behind a reverse proxy (Render, Railway, Nginx, etc.)
@@ -37,4 +38,5 @@ app.use(limiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/admins", adminRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/gallery", galleryRoutes);
 export default app;
