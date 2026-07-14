@@ -8,8 +8,9 @@ import { env } from "@/config";
 import authRoutes from "@/modules/auth/Routes/auth.routes";
 import adminRoutes from "@/modules/admin-management/routes/admin.routes";
 import settingsRoutes from "@/modules/settings/routes/settings.routes";
-import galleryRoutes from "@/modules/gallery/routes/gallery.routes.js";
-import announcementRoutes from "@/modules/announcements/routes/announcement.routes.js";
+import galleryRoutes from "@/modules/gallery/routes/gallery.routes";
+import announcementRoutes from "@/modules/announcements/routes/announcement.routes";
+import testimonialsRoutes from "@/modules/testimonials/routes/testimonials.routes"
 const app = express();
 
 // Needed if running behind a reverse proxy (Render, Railway, Nginx, etc.)
@@ -41,4 +42,5 @@ app.use("/api/admins", adminRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/announcements", announcementRoutes);
+app.use("/api/testimonials", testimonialsRoutes);
 export default app;
