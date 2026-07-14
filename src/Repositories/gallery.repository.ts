@@ -127,6 +127,11 @@ const {
 
     return item;
   }
+
+  async count(): Promise<number> {
+    const [{ total }] = await db.select({ total: count() }).from(gallery);
+    return total;
+  }
 }
 
 export const galleryRepository = new GalleryRepository();

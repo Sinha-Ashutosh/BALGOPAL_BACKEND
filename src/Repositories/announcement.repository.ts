@@ -109,6 +109,11 @@ export class AnnouncementRepository {
       .returning();
     return announcement;
   }
+
+  async count(): Promise<number> {
+    const [{ total }] = await db.select({ total: count() }).from(announcements);
+    return total;
+  }
 }
 
 export const announcementRepository = new AnnouncementRepository();

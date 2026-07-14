@@ -11,7 +11,7 @@ import {
 
 import { db } from "@/database/index";
 import { admissions } from "@/database/schema/index";
-
+import { AdmissionStatus } from "@/constants/admission";
 import type {
   CreateAdmissionDto,
   GetAdmissionQueryDto,
@@ -142,6 +142,19 @@ export class AdmissionRepository {
       .returning();
 
     return admission;
+  }
+
+  async count(): Promise<number> {
+    const [{ total }] = await db.select({ total: count() }).from(admissions);
+    return total;
+  }
+
+  async countByStatus(status: AdmissionStatus): Promise<number> {
+    const [{ total }] = await db
+      .select({ total: count() })
+      .from(admissions)
+      .where(eq(admissions.status, status));
+    return total;
   }
 }
 

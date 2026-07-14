@@ -88,6 +88,11 @@ export class ContactMessageRepository {
       .where(eq(contactMessages.isRead, false));
     return total;
   }
+
+  async countAll(): Promise<number> {
+    const [{ total }] = await db.select({ total: count() }).from(contactMessages);
+    return total;
+  }
 }
 
 export const contactMessageRepository = new ContactMessageRepository();

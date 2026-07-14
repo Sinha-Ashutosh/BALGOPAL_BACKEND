@@ -13,6 +13,7 @@ import announcementRoutes from "@/modules/announcements/routes/announcement.rout
 import testimonialsRoutes from "@/modules/testimonials/routes/testimonials.routes";
 import admissionsRoutes from "@/modules/admissions/routes/admissions.routes";
 import contactRoutes from "@/modules/contact-messages/routes/contact-message.routes";
+import dashboardRoutes from "@/modules/dashboard/routes/dashboard.routes";
 const app = express();
 
 // Needed if running behind a reverse proxy (Render, Railway, Nginx, etc.)
@@ -47,4 +48,5 @@ app.use("/api/announcements", announcementRoutes);
 app.use("/api/testimonials", testimonialsRoutes);
 app.use("/api/admissions", admissionsRoutes);
 app.use("/api/contact-messages", contactRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 export default app;
