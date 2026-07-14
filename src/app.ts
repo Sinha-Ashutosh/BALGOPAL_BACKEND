@@ -11,7 +11,8 @@ import settingsRoutes from "@/modules/settings/routes/settings.routes";
 import galleryRoutes from "@/modules/gallery/routes/gallery.routes";
 import announcementRoutes from "@/modules/announcements/routes/announcement.routes";
 import testimonialsRoutes from "@/modules/testimonials/routes/testimonials.routes";
-import admissionsRoutes from "@/modules/admissions/routes/admissions.routes"
+import admissionsRoutes from "@/modules/admissions/routes/admissions.routes";
+import contactRoutes from "@/modules/contact-messages/routes/contact-message.routes";
 const app = express();
 
 // Needed if running behind a reverse proxy (Render, Railway, Nginx, etc.)
@@ -45,4 +46,5 @@ app.use("/api/gallery", galleryRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/testimonials", testimonialsRoutes);
 app.use("/api/admissions", admissionsRoutes);
+app.use("/api/contact-messages", contactRoutes);
 export default app;

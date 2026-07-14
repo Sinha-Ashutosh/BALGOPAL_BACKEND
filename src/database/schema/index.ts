@@ -6,3 +6,4 @@ export * from "./gallery.schema";
 export * from "./announcements.schema";
 export* from "./testimonials.schema";
 export * from "./admissions.schema";
+export * from "./contact-message.schema";
