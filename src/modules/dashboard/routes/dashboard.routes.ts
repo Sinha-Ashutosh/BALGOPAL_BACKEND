@@ -13,4 +13,11 @@ router.get(
   dashboardController.getStats
 );
 
+router.get(
+  "/recent-admissions",
+  authenticate,
+  authorize(ROLES.ADMIN, ROLES.PRINCIPAL),
+  dashboardController.getRecentAdmissions
+);
+
 export default router;

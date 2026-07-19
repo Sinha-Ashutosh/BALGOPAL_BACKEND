@@ -105,17 +105,11 @@ const logoutAll = asyncHandler(
   }
 );
 
-const me = asyncHandler(
-  async (req: Request, res: Response) => {
-    const admin = await authService.me(req.user.adminId);
-
-    return response.success(
-      res,
-      admin,
-      "Admin fetched successfully."
-    );
-  }
-);
+// auth.controller.ts
+const me = asyncHandler(async (req: Request, res: Response) => {
+  const admin = await authService.me(req.user!.adminId);
+  return response.success(res, { admin }, "Admin fetched successfully.");
+});
 
 export const authController = {
   login,

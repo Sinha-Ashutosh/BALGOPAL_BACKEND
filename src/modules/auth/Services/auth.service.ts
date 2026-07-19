@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 
 import { adminRepository } from "@/repositories/admin.repository";
 import { refreshTokenRepository } from "@/repositories/refresh-token.repository";
-
+import { AdminWithRole } from "@/types/admin-with-role";
 import { jwtService } from "./jwt.service";
 import { Role } from "@/src/constants/role";
 
@@ -155,21 +155,14 @@ export class AuthService {
   /**
    * Returns the currently authenticated admin without the password hash.
    */
-  async me(
-    adminId: string
-  ): Promise<
-    Omit<typeof adminRepository extends { findById: (...args: any[]) => Promise<infer T> } ? NonNullable<T> : never, "password"> | null
-  > {
-    const admin = await adminRepository.findById(adminId);
+  // auth.service.ts
+async me(adminId: string): Promise<Omit<AdminWithRole, "password"> | null> {
+  const admin = await adminRepository.findById(adminId);
+  if (!admin) return null;
 
-    if (!admin) {
-      return null;
-    }
-
-    const { password, ...safeAdmin } = admin;
-
-    return safeAdmin;
-  }
+  const { password, ...safeAdmin } = admin;
+  return safeAdmin;
+}
 }
 
 export const authService = new AuthService();

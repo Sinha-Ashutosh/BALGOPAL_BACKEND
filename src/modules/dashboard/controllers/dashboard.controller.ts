@@ -17,6 +17,19 @@ const getStats = asyncHandler(
   }
 );
 
+const getRecentAdmissions = asyncHandler(
+  async (_req: Request, res: Response) => {
+    const admissions = await dashboardService.getRecentAdmissions();
+
+    return response.success(
+      res,
+      admissions,
+      "Recent admissions fetched successfully."
+    );
+  }
+);
+
 export const dashboardController = {
   getStats,
+  getRecentAdmissions,
 };

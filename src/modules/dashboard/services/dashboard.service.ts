@@ -40,6 +40,9 @@ export class DashboardService {
       announcements,
     };
   }
+  async getRecentAdmissions() {
+    return admissionRepository.findRecent(5);
+  }
 }
 
 export const dashboardService = new DashboardService();

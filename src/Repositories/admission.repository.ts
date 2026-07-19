@@ -156,6 +156,14 @@ export class AdmissionRepository {
       .where(eq(admissions.status, status));
     return total;
   }
+
+  async findRecent(limit = 5) {
+  return db
+    .select()
+    .from(admissions)
+    .orderBy(desc(admissions.createdAt))
+    .limit(limit);
+}
 }
 
 export const admissionRepository = new AdmissionRepository();
